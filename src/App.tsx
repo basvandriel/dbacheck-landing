@@ -15,10 +15,6 @@ function App() {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
 
   // Track page view on component mount
   useEffect(() => {}, []);
@@ -320,6 +316,7 @@ Als je interesse hebt in een gesprek, of meer wilt weten over de komende automat
           templateParams: Object.keys(templateParams),
         });
 
+        // eslint-disable-next-line no-useless-catch
         try {
           const result = await emailjs.send(
             "service_e5sgqty", // Your service ID
@@ -328,13 +325,7 @@ Als je interesse hebt in een gesprek, of meer wilt weten over de komende automat
             "XgaQ6r0hi05rdDRA9" // Your public key
           );
           console.log("✅ EmailJS send completed successfully:", result);
-        } catch (emailError: any) {
-          console.error("❌ EmailJS error details:", {
-            status: emailError?.status,
-            text: emailError?.text,
-            message: emailError?.message,
-            name: emailError?.name,
-          });
+        } catch (emailError: unknown) {
           throw emailError; // Re-throw to trigger the catch block below
         }
       }

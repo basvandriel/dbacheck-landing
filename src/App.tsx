@@ -19,6 +19,7 @@ function App() {
   // Track page view on component mount
   useEffect(() => {
     trackPageView("/");
+    trackEvent("page_load", "view", "landing_page");
     // Debug analytics setup (remove in production)
     setTimeout(() => debugAnalytics(), 1000);
   }, []);

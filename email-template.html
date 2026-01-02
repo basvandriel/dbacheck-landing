@@ -6,137 +6,115 @@
     <title>DBA Compliance Check Resultaat</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
             color: #333;
             max-width: 600px;
             margin: 0 auto;
-            background-color: #f8fafc;
+            background-color: #ffffff;
+            font-size: 16px;
         }
         .container {
             background-color: white;
-            margin: 20px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 20px;
+            background-color: #f8f9fa;
+            padding: 20px;
             text-align: center;
+            border-bottom: 1px solid #e5e5e5;
         }
         .header h1 {
             margin: 0;
-            font-size: 28px;
-            font-weight: 700;
-        }
-        .header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-            font-size: 16px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
         .content {
-            padding: 30px 20px;
+            padding: 20px;
         }
         .risk-score {
             text-align: center;
-            margin: 30px 0;
-            padding: 25px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 2px solid;
         }
         .risk-high {
             background-color: #fef2f2;
-            border: 2px solid #fca5a5;
+            border-color: #fecaca;
             color: #dc2626;
         }
         .risk-medium {
-            background-color: #fef3c7;
-            border: 2px solid #fbbf24;
+            background-color: #fefce8;
+            border-color: #fde68a;
             color: #d97706;
         }
         .risk-low {
             background-color: #f0fdf4;
-            border: 2px solid #86efac;
+            border-color: #bbf7d0;
             color: #16a34a;
         }
         .section {
-            margin: 25px 0;
+            margin: 20px 0;
         }
         .section h2 {
-            color: #1f2937;
-            font-size: 20px;
+            color: #1a1a1a;
+            font-size: 18px;
             font-weight: 600;
-            margin: 0 0 15px 0;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 8px;
+            margin: 0 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e5e5e5;
         }
         .insights {
-            background-color: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
         }
         .insights ul {
             margin: 0;
-            padding-left: 20px;
+            padding-left: 15px;
         }
         .insights li {
-            margin: 8px 0;
+            margin: 5px 0;
             color: #374151;
         }
-        .form-data {
-            background-color: #f3f4f6;
-            padding: 15px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #6b7280;
-            white-space: pre-wrap;
-            overflow-x: auto;
-        }
         .upsell {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 30px 0;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 1px solid #e5e5e5;
         }
         .upsell h3 {
-            margin: 0 0 15px 0;
-            font-size: 22px;
-            font-weight: 700;
-        }
-        .upsell p {
-            margin: 0;
-            font-size: 16px;
-            line-height: 1.5;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
         .footer {
-            background-color: #1f2937;
-            color: white;
-            padding: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
             text-align: center;
             font-size: 14px;
-        }
-        .footer p {
-            margin: 5px 0;
+            border-top: 1px solid #e5e5e5;
+            color: #6b7280;
         }
         .highlight {
-            background-color: #dbeafe;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
+            background-color: #eff6ff;
+            padding: 1px 4px;
+            border-radius: 3px;
         }
         .urgent {
-            color: #dc2626;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 12px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -144,37 +122,36 @@
     <div class="container">
         <div class="header">
             <h1>DBA Compliance Check</h1>
-            <p>Persoonlijk Risico Rapport</p>
         </div>
 
         <div class="content">
             <div class="section">
-                <h2>📧 Rapport voor: <span class="highlight">{{email}}</span></h2>
-                <p>Bedankt voor het invullen van onze DBA compliance check. Hieronder vindt u uw persoonlijke risicoanalyse.</p>
+                <p>Hoi <span class="highlight">{{email}}</span>,</p>
+                <p>Bedankt voor het invullen van de DBA compliance check. Hier is je persoonlijke risicoanalyse.</p>
             </div>
 
             <div class="risk-score {{risk_level | replace('Hoog risico - Onmiddellijke actie nodig', 'risk-high') | replace('Gemiddeld tot hoog risico', 'risk-medium') | replace('Laag risico', 'risk-low')}}">
-                <div class="urgent">{{risk_level | replace('Hoog risico - Onmiddellijke actie nodig', 'URGENT') | replace('Gemiddeld tot hoog risico', 'ATTENTIE') | replace('Laag risico', '')}}</div>
-                <div style="font-size: 36px; font-weight: 900; margin: 10px 0;">{{risk_score}}/45</div>
-                <div style="font-size: 18px;">{{risk_level}}</div>
+                <div class="urgent">{{risk_level | replace('Hoog risico - Onmiddellijke actie nodig', 'BELANGRIJK') | replace('Gemiddeld tot hoog risico', 'LET OP') | replace('Laag risico', '')}}</div>
+                <div style="font-size: 32px; font-weight: 700; margin: 8px 0;">{{risk_score}}/45</div>
+                <div>{{risk_level}}</div>
             </div>
 
             <div class="section">
-                <h2>🔍 Uw Risico Analyse</h2>
+                <h2>Je risico analyse</h2>
                 <div class="insights">
-                    <p>Gebaseerd op uw antwoorden hebben we de volgende aandachtspunten geïdentificeerd:</p>
-                    <div style="white-space: pre-line;">{{insights}}</div>
+                    <p>Op basis van je antwoorden heb ik deze aandachtspunten gevonden:</p>
+                    <div style="line-height: 1.6;">{{insights}}</div>
                 </div>
             </div>
 
             <div class="upsell">
-                <h3>Wil je échte zekerheid?</h3>
-                <div style="white-space: pre-line;">{{upsell_message}}</div>
+                <h3>Meer zekerheid?</h3>
+                <div style="line-height: 1.6;">{{upsell_message}}</div>
             </div>
 
             <div class="section">
-                <h2>⚡ Volgende Stappen</h2>
-                <p>Neem contact met ons op als u vragen heeft over dit rapport of hulp nodig heeft bij het verbeteren van uw DBA compliance.</p>
+                <h2>Volgende stappen</h2>
+                <p>Als je vragen hebt over dit rapport of hulp wilt bij het verbeteren van je DBA compliance, neem dan contact met me op.</p>
                 <p><strong>E-mail:</strong> contact@basvandriel.nl<br>
                 <strong>Website:</strong> www.basvandriel.nl</p>
             </div>
@@ -182,10 +159,10 @@
 
         <div class="footer">
             <p><strong>DBA Compliance Check</strong></p>
-            <p>Ontwikkeld door Bas van Driel - DBA Expert</p>
-            <p style="font-style: italic; color: #fbbf24;">🚀 Dit is een validatieversie - professionele automatische PDF-rapporten komen binnenkort!</p>
-            <p>Deze analyse is informatief en geen juridisch advies.</p>
-            <p style="font-size: 12px; opacity: 0.7;">© 2026 Bas van Driel. Alle rechten voorbehouden.</p>
+            <p>Bas van Driel - DBA Expert</p>
+            <p style="font-style: italic;">Dit is een validatieversie - professionele automatische rapporten komen binnenkort.</p>
+            <p>Dit is geen juridisch advies. Neem contact op met een professional voor specifieke situaties.</p>
+            <p style="font-size: 12px;">© 2026 Bas van Driel</p>
         </div>
     </div>
 </body>

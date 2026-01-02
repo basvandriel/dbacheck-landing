@@ -255,23 +255,13 @@ function App() {
 
       // Create upsell message
       const upsellMessage = `
-Interesse in professionele DBA-ondersteuning?
+Ik werk aan een automatische versie van deze check die binnenkort klaar is. Die geeft dan direct een PDF rapport met een persoonlijk actieplan.
 
-🚀 Binnenkort beschikbaar: Automatische DBA-Check voor €49
-• Directe PDF-levering met persoonlijk actieplan
-• Contract templates op maat
-• Concrete verbeterpunten per aandachtspunt
-• Implementatie checklist
-• Bonus: Discussie-script voor opdrachtgever
+Voor nu bied ik persoonlijke DBA adviesgesprekken aan voor €149. Daarin bespreken we je specifieke situatie en hoe je je positie kunt verbeteren.
 
-💡 Momenteel beschikbaar:
-• Persoonlijk DBA-adviesgesprek (€149)
-• Contract review en optimalisatie
-• Risicoanalyse en compliance-check
-• Strategisch advies voor zzp'ers
+Als je interesse hebt in een gesprek, of meer wilt weten over de komende automatische versie, stuur dan even een reply.`;
 
-Early bird: €49 voor automatische versie (normaal €99)
-Reply op deze mail voor meer informatie of een adviesgesprek.`;
+      // Send email using EmailJS
 
       // Send email using EmailJS
       const templateParams = {

@@ -13,9 +13,11 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
       .getByRole("button", { name: /start gratis risico check/i })
       .click();
 
-    // Wait for the form to be visible
+    // Wait for the form to be visible - check for the first question
     await expect(
-      page.getByText("Beantwoord de vragen voor een persoonlijk risico-rapport")
+      page.getByText(
+        "1. Hoeveel uur per week werk je gemiddeld voor deze opdrachtgever?"
+      )
     ).toBeVisible();
 
     // Fill out all required questions

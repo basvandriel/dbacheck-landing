@@ -2,8 +2,7 @@ import ReactGA from "react-ga4";
 
 // Only enable analytics in true production (not test environments)
 // Set VITE_ENABLE_ANALYTICS=true during build for production
-// const isAnalyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS === "true";
-const isAnalyticsEnabled = true;
+const isAnalyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS === "true";
 
 export const initializeAnalytics = () => {
   if (isAnalyticsEnabled) {

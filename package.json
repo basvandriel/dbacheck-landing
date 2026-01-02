@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:production": "playwright test --config playwright.production.config.ts --grep \"should send actual production email\"",
+    "test:email": "node test-email.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -21,8 +25,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.57.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
@@ -31,9 +39,12 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "jsdom": "^25.0.1",
+    "nodemailer": "^7.0.12",
     "semantic-release": "^25.0.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vitest": "^2.1.8"
   }
 }

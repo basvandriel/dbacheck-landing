@@ -15,12 +15,16 @@ function App() {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   // Track page view on component mount
   useEffect(() => {}, []);
 
   const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth" });
+    formRef.current?.scrollIntoView?.({ behavior: "smooth" });
     trackEvent("navigation", "click", "cta_button");
   };
 
@@ -249,37 +253,101 @@ function App() {
       // Calculate risk score
       const { score, level, emailInsights } = calculateRiskScore(formData);
 
-      // Send email using EmailJS
+      // Create upsell message
       const upsellMessage = `
-Wil je échte zekerheid?
-Upgrade naar onze Automatische DBA-Check voor €49:
+Interesse in professionele DBA-ondersteuning?
 
-• Directe PDF-levering met je persoonlijke actieplan
-• Contract templates aangepast aan je situatie
-• Concrete verbeterpunten voor elk aandachtspunt
-• Implementatie checklist om compliant te worden
-• Bonus: Discussie-script voor je opdrachtgever
+🚀 Binnenkort beschikbaar: Automatische DBA-Check voor €49
+• Directe PDF-levering met persoonlijk actieplan
+• Contract templates op maat
+• Concrete verbeterpunten per aandachtspunt
+• Implementatie checklist
+• Bonus: Discussie-script voor opdrachtgever
 
-Early bird prijs: €49 (normaal €99) – volledig automatisch, direct in je mailbox.
+💡 Momenteel beschikbaar:
+• Persoonlijk DBA-adviesgesprek (€149)
+• Contract review en optimalisatie
+• Risicoanalyse en compliance-check
+• Strategisch advies voor zzp'ers
 
-Voor complexe gevallen met persoonlijke contractreview en adviesgesprek: €149
-Reply op deze mail als je dit wilt, dan stuur ik een betaallink.`;
+Early bird: €49 voor automatische versie (normaal €99)
+Reply op deze mail voor meer informatie of een adviesgesprek.`;
 
+      // Send email using EmailJS
       const templateParams = {
-        to_email: formData.email,
+        // Note: to_email is not needed if the template is configured with a fixed recipient
+        email: formData.email, // Changed from user_email to match template variable {{email}}
         risk_score: score,
         risk_level: level,
         insights: emailInsights.join("\n• "),
-        form_data: JSON.stringify(formData, null, 2),
         upsell_message: upsellMessage,
       };
 
-      await emailjs.send(
-        "service_your_service_id", // You'll need to set this up in EmailJS
-        "template_your_template_id", // You'll need to create a template
-        templateParams,
-        "your_public_key" // You'll need to get this from EmailJS
+      console.log("📋 Form data at submission:", {
+        email: formData.email,
+        emailExists: !!formData.email,
+        emailLength: formData.email?.length,
+        allFormDataKeys: Object.keys(formData),
+      });
+
+      // Check if we're in test mode
+      const isTestMode = import.meta.env.VITE_TEST_MODE === "true";
+      console.log(
+        "🔍 Environment check - VITE_TEST_MODE:",
+        import.meta.env.VITE_TEST_MODE,
+        "isTestMode:",
+        isTestMode
       );
+
+      if (isTestMode) {
+        // In test mode, log the email data instead of sending
+        console.log("TEST MODE: Email would be sent with data:", {
+          serviceId: "service_e5sgqty",
+          templateId: "template_nghge43",
+          templateParams,
+          publicKey: "XgaQ6r0hi05rdDRA9",
+        });
+        // Store test email data for verification
+        localStorage.setItem(
+          "testEmailData",
+          JSON.stringify({
+            to_email: formData.email,
+            risk_score: score,
+            risk_level: level,
+            insights: emailInsights.join("\n• "),
+            form_data: formData,
+            upsell_message: upsellMessage,
+            timestamp: new Date().toISOString(),
+          })
+        );
+      } else {
+        // Production: Send real email via EmailJS
+        console.log("📧 Sending production email via EmailJS...");
+        console.log("🔧 EmailJS params:", {
+          serviceId: "service_e5sgqty",
+          templateId: "template_nghge43",
+          publicKey: "XgaQ6r0hi05rdDRA9",
+          templateParams: Object.keys(templateParams),
+        });
+
+        try {
+          const result = await emailjs.send(
+            "service_e5sgqty", // Your service ID
+            "template_nghge43", // Your template ID
+            templateParams,
+            "XgaQ6r0hi05rdDRA9" // Your public key
+          );
+          console.log("✅ EmailJS send completed successfully:", result);
+        } catch (emailError: any) {
+          console.error("❌ EmailJS error details:", {
+            status: emailError?.status,
+            text: emailError?.text,
+            message: emailError?.message,
+            name: emailError?.name,
+          });
+          throw emailError; // Re-throw to trigger the catch block below
+        }
+      }
 
       console.log("Form submitted successfully:", {
         score,
@@ -290,8 +358,11 @@ Reply op deze mail als je dit wilt, dan stuur ik een betaallink.`;
       // Track successful form submission
       trackEvent("form", "submit", "dba_check", score);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("❌ EmailJS error:", error);
       // For now, still show success even if email fails
+      console.log(
+        "⚠️  Email sending failed, but showing success message anyway"
+      );
     }
 
     setIsSubmitting(false);

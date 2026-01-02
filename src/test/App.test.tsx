@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
 import "@testing-library/jest-dom";
@@ -40,12 +40,11 @@ describe("Email Functionality - Integration Tests", () => {
     await userEvent.click(ctaButton);
 
     // Fill out all required questions to satisfy form validation
-    const selectElements = screen.getAllByRole("combobox");
-    for (const select of selectElements) {
-      const options = within(select).getAllByRole("option");
-      if (options.length > 1) {
-        const value = (options[1] as HTMLOptionElement).value;
-        await userEvent.selectOptions(select as HTMLSelectElement, value);
+    const radioGroups = screen.getAllByRole("radiogroup");
+    for (const radioGroup of radioGroups) {
+      const radios = radioGroup.querySelectorAll('input[type="radio"]');
+      if (radios.length > 0) {
+        await userEvent.click(radios[0] as HTMLInputElement);
       }
     }
 
@@ -97,12 +96,11 @@ describe("Email Functionality - Integration Tests", () => {
     await userEvent.click(ctaButton);
 
     // Fill out all required questions
-    const selectElements = screen.getAllByRole("combobox");
-    for (const select of selectElements) {
-      const options = within(select).getAllByRole("option");
-      if (options.length > 1) {
-        const value = (options[1] as HTMLOptionElement).value;
-        await userEvent.selectOptions(select as HTMLSelectElement, value);
+    const radioGroups = screen.getAllByRole("radiogroup");
+    for (const radioGroup of radioGroups) {
+      const radios = radioGroup.querySelectorAll('input[type="radio"]');
+      if (radios.length > 0) {
+        await userEvent.click(radios[0] as HTMLInputElement);
       }
     }
 
@@ -142,12 +140,11 @@ describe("Email Functionality - Integration Tests", () => {
     await userEvent.click(ctaButton);
 
     // Fill out all required questions
-    const selectElements = screen.getAllByRole("combobox");
-    for (const select of selectElements) {
-      const options = within(select).getAllByRole("option");
-      if (options.length > 1) {
-        const value = (options[1] as HTMLOptionElement).value;
-        await userEvent.selectOptions(select as HTMLSelectElement, value);
+    const radioGroups = screen.getAllByRole("radiogroup");
+    for (const radioGroup of radioGroups) {
+      const radios = radioGroup.querySelectorAll('input[type="radio"]');
+      if (radios.length > 0) {
+        await userEvent.click(radios[0] as HTMLInputElement);
       }
     }
 
@@ -188,15 +185,11 @@ describe("Email Functionality - Integration Tests", () => {
     await userEvent.click(ctaButton);
 
     // Fill out only a few questions
-    const selectElements = screen.getAllByRole("combobox");
-    if (selectElements.length > 0) {
-      const options = within(selectElements[0]).getAllByRole("option");
-      if (options.length > 1) {
-        const value = (options[1] as HTMLOptionElement).value;
-        await userEvent.selectOptions(
-          selectElements[0] as HTMLSelectElement,
-          value
-        );
+    const radioGroups = screen.getAllByRole("radiogroup");
+    if (radioGroups.length > 0) {
+      const radios = radioGroups[0].querySelectorAll('input[type="radio"]');
+      if (radios.length > 0) {
+        await userEvent.click(radios[0] as HTMLInputElement);
       }
     }
 
@@ -249,15 +242,71 @@ describe("Email Functionality - Integration Tests", () => {
     await userEvent.click(ctaButton);
 
     // Fill out questions to simulate high risk (select options that increase score)
-    const selectElements = screen.getAllByRole("combobox");
-    for (const select of selectElements) {
-      const options = within(select).getAllByRole("option");
-      // Select high-risk options where possible
-      if (options.length > 2) {
-        const value = (options[1] as HTMLOptionElement).value;
-        await userEvent.selectOptions(select as HTMLSelectElement, value); // Assuming first option after placeholder is high risk
-      }
-    }
+    // Find all question containers and fill them with high-risk answers
+    const questionContainers = screen.getAllByRole("radiogroup");
+
+    // q1: Hours worked - select "Meer dan 40" (+3)
+    await userEvent.click(
+      questionContainers[0].querySelector('input[value="Meer dan 40"]')!
+    );
+    // q2: Client thinks employee - select "Ja, expliciet gezegd" (+3)
+    await userEvent.click(
+      questionContainers[1].querySelector(
+        'input[value="Ja, expliciet gezegd"]'
+      )!
+    );
+    // q3: Client controls work - select "Ja" (+3)
+    await userEvent.click(
+      questionContainers[2].querySelector('input[value="Ja"]')!
+    );
+    // q4: Work on premises - select "Dagelijks" (+3)
+    await userEvent.click(
+      questionContainers[3].querySelector('input[value="Dagelijks"]')!
+    );
+    // q5: Use client software - select "Ja, allemaal" (+3)
+    await userEvent.click(
+      questionContainers[4].querySelector('input[value="Ja, allemaal"]')!
+    );
+    // q6: Fixed wage - select "Ja" (+3)
+    await userEvent.click(
+      questionContainers[5].querySelector('input[value="Ja"]')!
+    );
+    // q7: Benefits - select "Ja" (+3)
+    await userEvent.click(
+      questionContainers[6].querySelector('input[value="Ja"]')!
+    );
+    // q8: Required availability - select "Ja" (+3)
+    await userEvent.click(
+      questionContainers[7].querySelector('input[value="Ja"]')!
+    );
+    // q9: Can be replaced - select "Ja" (0 points)
+    await userEvent.click(
+      questionContainers[8].querySelector('input[value="Ja"]')!
+    );
+    // q10: Multiple clients - select "Nee" (0 points)
+    await userEvent.click(
+      questionContainers[9].querySelector('input[value="Nee"]')!
+    );
+    // q11: Set own hours - select "Nee" (+3)
+    await userEvent.click(
+      questionContainers[10].querySelector('input[value="Nee"]')!
+    );
+    // q12: Own tools - select "Nee" (+2)
+    await userEvent.click(
+      questionContainers[11].querySelector('input[value="Nee"]')!
+    );
+    // q13: KvK registration - select "Nee" (0 points)
+    await userEvent.click(
+      questionContainers[12].querySelector('input[value="Nee"]')!
+    );
+    // q14: Own website - select "Nee" (0 points)
+    await userEvent.click(
+      questionContainers[13].querySelector('input[value="Nee"]')!
+    );
+    // q15: Experience - select "Minder dan 1 jaar" (0 points)
+    await userEvent.click(
+      questionContainers[14].querySelector('input[value="Minder dan 1 jaar"]')!
+    );
 
     // Fill out email
     const emailInput = screen.getByLabelText(/jouw e-mailadres/i);
@@ -291,29 +340,27 @@ describe("Email Functionality - Integration Tests", () => {
     expect(screen.getByText(/bedankt/i)).toBeInTheDocument();
   });
 
-  it("renders the form correctly after CTA click", async () => {
+  it("renders the form correctly", async () => {
     render(<App />);
 
-    // Initially, form should not be visible or questions not present
-    expect(
-      screen.queryByLabelText(/jouw e-mailadres/i)
-    ).not.toBeInTheDocument();
+    // Form should be visible from the start
+    expect(screen.getByLabelText(/jouw e-mailadres/i)).toBeInTheDocument();
 
-    // Click the CTA button to show the form
+    // Click the CTA button to scroll to the form
     const ctaButton = screen.getByRole("button", {
       name: /start gratis risico check/i,
     });
     await userEvent.click(ctaButton);
 
-    // Now form elements should be present
+    // Form elements should be present
     expect(screen.getByLabelText(/jouw e-mailadres/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("combobox")).toHaveLength(15); // Assuming 15 questions
+    expect(screen.getAllByRole("radiogroup")).toHaveLength(15); // Assuming 15 questions
     expect(
       screen.getByRole("button", { name: /verstuur mijn gratis analyse/i })
     ).toBeInTheDocument();
   });
 
-  it("updates form data on select change", async () => {
+  it("updates form data on radio button change", async () => {
     render(<App />);
 
     // Click the CTA button to show the form
@@ -322,15 +369,14 @@ describe("Email Functionality - Integration Tests", () => {
     });
     await userEvent.click(ctaButton);
 
-    const selectElements = screen.getAllByRole("combobox");
-    const firstSelect = selectElements[0] as HTMLSelectElement;
-    const options = within(firstSelect).getAllByRole("option");
+    const radioGroups = screen.getAllByRole("radiogroup");
+    const firstRadioGroup = radioGroups[0];
+    const radios = firstRadioGroup.querySelectorAll('input[type="radio"]');
 
-    // Select an option
-    if (options.length > 1) {
-      const value = (options[1] as HTMLOptionElement).value;
-      await userEvent.selectOptions(firstSelect, value);
-      expect(firstSelect).toHaveValue(value);
+    // Click a radio button
+    if (radios.length > 0) {
+      await userEvent.click(radios[0] as HTMLInputElement);
+      expect(radios[0]).toBeChecked();
     }
   });
 });

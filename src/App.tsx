@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { trackPageView, trackEvent, debugAnalytics } from "./utils";
+import { trackPageView, trackEvent } from "./utils";
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -17,12 +17,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Track page view on component mount
-  useEffect(() => {
-    trackPageView("/");
-    trackEvent("page_load", "view", "landing_page");
-    // Debug analytics setup (remove in production)
-    setTimeout(() => debugAnalytics(), 1000);
-  }, []);
+  useEffect(() => {}, []);
 
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,10 +29,8 @@ function App() {
   };
 
   useEffect(() => {
-    // Track page view on mount
-    import("./utils").then(({ trackPageView }) => {
-      trackPageView(window.location.pathname + window.location.search);
-    });
+    trackPageView(window.location.pathname + window.location.search);
+    trackEvent("page_view", "visit", "landing_page");
   }, []);
 
   const calculateRiskScore = (

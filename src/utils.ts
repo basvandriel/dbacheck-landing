@@ -17,9 +17,7 @@ export const initializeAnalytics = () => {
         send_page_view: true,
       },
     });
-    console.log("✅ Google Analytics initialized (with localhost support)");
-  } else {
-    console.log("🔧 Google Analytics disabled (development/test environment)");
+    console.log("✅ GA4 initialized");
   }
 };
 
@@ -27,9 +25,6 @@ export const initializeAnalytics = () => {
 export const trackPageView = (path: string) => {
   if (isAnalyticsEnabled) {
     ReactGA.send({ hitType: "pageview", page: path });
-    console.log(`📊 [Page View] ${path}`);
-  } else {
-    console.log(`📊 [Page View Skipped] ${path} - Analytics not ready`);
   }
 };
 
@@ -46,20 +41,10 @@ export const trackEvent = (
       label,
       value,
     });
-  } else {
-    // Log in development for debugging
-    console.log("📊 [Analytics Event]", { category, action, label, value });
-  }
-};
-
-export const debugAnalytics = () => {
-  if (isAnalyticsEnabled) {
-    console.log("🔍 GA4 Debug Info:");
-    console.log("- Measurement ID: G-7FFS6QJMSL");
-    console.log("- Debug mode: Enabled");
-    console.log("- Check GA4 Real-time dashboard for live data");
-  } else {
-    console.log("❌ GA4 not initialized yet");
+    console.log(
+      `📊 Event: ${category} - ${action}`,
+      label ? { label, value } : {}
+    );
   }
 };
 

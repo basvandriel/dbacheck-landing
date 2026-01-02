@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
+import { trackPageView, trackEvent, debugAnalytics } from "./utils";
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -15,13 +16,28 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Track page view on component mount
+  useEffect(() => {
+    trackPageView("/");
+    // Debug analytics setup (remove in production)
+    setTimeout(() => debugAnalytics(), 1000);
+  }, []);
+
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: "smooth" });
+    trackEvent("navigation", "click", "cta_button");
   };
 
   const handleInputChange = (question: string, value: string) => {
     setFormData((prev) => ({ ...prev, [question]: value }));
   };
+
+  useEffect(() => {
+    // Track page view on mount
+    import("./utils").then(({ trackPageView }) => {
+      trackPageView(window.location.pathname + window.location.search);
+    });
+  }, []);
 
   const calculateRiskScore = (
     data: Record<string, string>
@@ -276,6 +292,9 @@ Reply op deze mail als je dit wilt, dan stuur ik een betaallink.`;
         level,
         emailInsights,
       });
+
+      // Track successful form submission
+      trackEvent("form", "submit", "dba_check", score);
     } catch (error) {
       console.error("Error submitting form:", error);
       // For now, still show success even if email fails

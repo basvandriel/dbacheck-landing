@@ -60,7 +60,7 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          VITE_GH_PAGES_BASE_URL: '/dba-compliance-check-landingpage/'
+          VITE_GH_PAGES_BASE_URL: '/dbacheck-landing/'
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

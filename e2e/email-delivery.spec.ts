@@ -28,12 +28,41 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
       .click();
 
     // Fill out all required questions
-    const selects = page.locator("select");
-    const count = await selects.count();
-    for (let i = 0; i < count; i++) {
-      const select = selects.nth(i);
-      await select.scrollIntoViewIfNeeded();
-      await select.selectOption({ index: 1 });
+    // The form uses radio buttons, not selects
+    const questions = [
+      { id: "q1", options: ["Minder dan 20", "20-40", "Meer dan 40"] },
+      {
+        id: "q2",
+        options: ["Nee", "Ja, geïmpliceerd", "Ja, expliciet gezegd"],
+      },
+      { id: "q3", options: ["Nee", "Soms", "Ja"] },
+      {
+        id: "q4",
+        options: ["Nooit", "Soms", "Meerdere keren per week", "Dagelijks"],
+      },
+      { id: "q5", options: ["Nee", "Ja, gedeeltelijk", "Ja, allemaal"] },
+      { id: "q6", options: ["Nee", "Soms", "Ja"] },
+      { id: "q7", options: ["Nee", "Soms", "Ja"] },
+      { id: "q8", options: ["Nee", "Soms", "Ja"] },
+      { id: "q9", options: ["Ja", "Moeilijk", "Nee"] },
+      { id: "q10", options: ["Nee", "1-2", "3 of meer"] },
+      { id: "q11", options: ["Ja", "Gedeeltelijk", "Nee"] },
+      { id: "q12", options: ["Ja", "Gedeeltelijk", "Nee"] },
+      { id: "q13", options: ["Nee", "Ja, als eenmanszaak", "Ja, als BV"] },
+      { id: "q14", options: ["Nee", "Ja"] },
+      {
+        id: "q15",
+        options: ["Minder dan 1 jaar", "1-3 jaar", "Meer dan 3 jaar"],
+      },
+    ];
+
+    for (const question of questions) {
+      // Click the second option (index 1) for each question
+      const radioButton = page.locator(
+        `input[type="radio"][name="${question.id}"][value="${question.options[1]}"]`
+      );
+      await radioButton.scrollIntoViewIfNeeded();
+      await radioButton.click();
       await page.waitForTimeout(50);
     }
 
@@ -119,17 +148,20 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
       .getByRole("button", { name: /start gratis risico check/i })
       .click();
 
-    // Try to submit without email
-    await page
-      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
-      .scrollIntoViewIfNeeded();
-    await page
-      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
-      .click();
+    // Fill out one question but leave email empty
+    const radioButton = page.locator(
+      'input[type="radio"][name="q1"][value="20-40"]'
+    );
+    await radioButton.scrollIntoViewIfNeeded();
+    await radioButton.click();
 
-    // Should still be on form (HTML5 validation)
-    await expect(
-      page.getByText("Beantwoord de vragen voor een persoonlijk risico-rapport")
-    ).toBeVisible();
+    // Try to submit without email - button should be disabled
+    const submitButton = page.getByRole("button", {
+      name: /verstuur mijn gratis analyse/i,
+    });
+    await expect(submitButton).toBeDisabled();
+
+    // Check that we're still on the form by verifying the email input is visible
+    await expect(page.getByLabel("Jouw e-mailadres")).toBeVisible();
   });
 });

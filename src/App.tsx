@@ -20,6 +20,7 @@ function App() {
   };
 
   const handleInputChange = (question: string, value: string) => {
+    console.log("Input change:", question, value);
     setFormData((prev) => ({ ...prev, [question]: value }));
   };
 
@@ -207,6 +208,9 @@ function App() {
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n"),
     };
+
+    console.log("Form data:", formData);
+    console.log("Template params:", templateParams);
 
     // In test mode, store data in localStorage instead of sending email
     if (import.meta.env.VITE_TEST_MODE === "true") {

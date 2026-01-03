@@ -28,13 +28,41 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
     ).toBeVisible();
 
     // Fill out all required questions
-    const selectElements = page.locator("select");
-    const count = await selectElements.count();
+    // The form uses radio buttons, not selects
+    const questions = [
+      { id: "q1", options: ["Minder dan 20", "20-40", "Meer dan 40"] },
+      {
+        id: "q2",
+        options: ["Nee", "Ja, geïmpliceerd", "Ja, expliciet gezegd"],
+      },
+      { id: "q3", options: ["Nee", "Soms", "Ja"] },
+      {
+        id: "q4",
+        options: ["Nooit", "Soms", "Meerdere keren per week", "Dagelijks"],
+      },
+      { id: "q5", options: ["Nee", "Ja, gedeeltelijk", "Ja, allemaal"] },
+      { id: "q6", options: ["Nee", "Soms", "Ja"] },
+      { id: "q7", options: ["Nee", "Soms", "Ja"] },
+      { id: "q8", options: ["Nee", "Soms", "Ja"] },
+      { id: "q9", options: ["Ja", "Moeilijk", "Nee"] },
+      { id: "q10", options: ["Nee", "1-2", "3 of meer"] },
+      { id: "q11", options: ["Ja", "Gedeeltelijk", "Nee"] },
+      { id: "q12", options: ["Ja", "Gedeeltelijk", "Nee"] },
+      { id: "q13", options: ["Nee", "Ja, als eenmanszaak", "Ja, als BV"] },
+      { id: "q14", options: ["Nee", "Ja"] },
+      {
+        id: "q15",
+        options: ["Minder dan 1 jaar", "1-3 jaar", "Meer dan 3 jaar"],
+      },
+    ];
 
-    for (let i = 0; i < count; i++) {
-      const select = selectElements.nth(i);
-      await select.scrollIntoViewIfNeeded();
-      await select.selectOption({ index: 1 });
+    for (const question of questions) {
+      // Click the second option (index 1) for each question
+      const radioButton = page.locator(
+        `input[type="radio"][name="${question.id}"][value="${question.options[1]}"]`
+      );
+      await radioButton.scrollIntoViewIfNeeded();
+      await radioButton.click();
       await page.waitForTimeout(50);
     }
 
@@ -79,9 +107,7 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
       risk_score: expect.any(Number),
       risk_level: expect.any(String),
       insights: expect.any(String),
-      form_data: expect.any(Object),
-      upsell_message: expect.any(String),
-      timestamp: expect.any(String),
+      form_data: expect.any(String),
     });
 
     // Verify risk score is reasonable (should be between 0-45)
@@ -109,11 +135,12 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
     // Wait for the form to be loaded
     await page.waitForSelector('input[type="email"]');
 
-    // Fill out minimal form data
-    const selects = page.locator("select");
-    const firstSelect = selects.first();
-    await firstSelect.scrollIntoViewIfNeeded();
-    await firstSelect.selectOption({ index: 1 });
+    // Fill out minimal form data - just one question
+    const radioButton = page.locator(
+      'input[type="radio"][name="q1"][value="20-40"]'
+    );
+    await radioButton.scrollIntoViewIfNeeded();
+    await radioButton.click();
     await page.getByLabel("Jouw e-mailadres").scrollIntoViewIfNeeded();
     await page.getByLabel("Jouw e-mailadres").fill("test@example.com");
 

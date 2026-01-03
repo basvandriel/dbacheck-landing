@@ -206,8 +206,6 @@ function App() {
         .filter(([key]) => key !== "email")
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n"),
-      upsell_message:
-        "Upgrade naar onze professionele PDF-analyse voor €49 voor gedetailleerde inzichten en verbeterplannen.",
     };
 
     // In test mode, store data in localStorage instead of sending email

@@ -130,10 +130,11 @@
                 <p>Bedankt voor het invullen van de DBA compliance check. Hier is je persoonlijke risicoanalyse.</p>
             </div>
 
-            <div class="risk-score {{risk_level | replace('Hoog risico - Onmiddellijke actie nodig', 'risk-high') | replace('Gemiddeld tot hoog risico', 'risk-medium') | replace('Laag risico', 'risk-low')}}">
-                <div class="urgent">{{risk_level | replace('Hoog risico - Onmiddellijke actie nodig', 'BELANGRIJK') | replace('Gemiddeld tot hoog risico', 'LET OP') | replace('Laag risico', '')}}</div>
+            <div class="risk-score {{risk_level | replace('Potentieel hoog risico - Overweeg actie', 'risk-high') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'risk-medium') | replace('Laag risico - Goede DBA-indicatoren', 'risk-low')}}">
+                <div class="urgent">{{risk_level | replace('Potentieel hoog risico - Overweeg actie', 'BELANGRIJK') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'LET OP') | replace('Laag risico - Goede DBA-indicatoren', '')}}</div>
                 <div style="font-size: 32px; font-weight: 700; margin: 8px 0;">{{risk_score}}/45</div>
                 <div>{{risk_level}}</div>
+                <div style="font-size: 12px; margin-top: 8px; font-style: italic;">Geschat risico gebaseerd op DBA-indicatoren</div>
             </div>
 
             <div class="section">
@@ -142,11 +143,6 @@
                     <p>Op basis van je antwoorden heb ik deze aandachtspunten gevonden:</p>
                     <div style="line-height: 1.6;">{{insights}}</div>
                 </div>
-            </div>
-
-            <div class="upsell">
-                <h3>Meer zekerheid?</h3>
-                <div style="line-height: 1.6;">{{upsell_message}}</div>
             </div>
 
             <div class="section">

@@ -177,11 +177,11 @@ function App() {
 
     let level = "";
     if (score >= 15) {
-      level = "Hoog risico - Onmiddellijke actie nodig";
+      level = "Potentieel hoog risico - Overweeg actie";
     } else if (score >= 8) {
-      level = "Gemiddeld risico - Verbeteringen aanbevolen";
+      level = "Gemiddeld risico - Mogelijke aandachtspunten";
     } else {
-      level = "Laag risico - Goede DBA-compliance";
+      level = "Laag risico - Goede DBA-indicatoren";
     }
 
     return {

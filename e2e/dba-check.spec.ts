@@ -4,9 +4,16 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
   test("should complete full user journey and send email", async ({ page }) => {
     // Navigate to the landing page
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
+
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
 
     // Verify the main heading is visible
     await expect(page.getByText("DBA-Proof in 2026?")).toBeVisible();
+
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
 
     // Click the CTA button to show the form
     await page
@@ -26,21 +33,19 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
 
     for (let i = 0; i < count; i++) {
       const select = selectElements.nth(i);
-      const options = select.locator("option");
-
-      // Skip the first option (placeholder) and select the second one
-      const optionCount = await options.count();
-      if (optionCount > 1) {
-        await select.selectOption({ index: 1 });
-      }
+      await select.scrollIntoViewIfNeeded();
+      await select.selectOption({ index: 1 });
+      await page.waitForTimeout(50);
     }
 
     // Fill out email
-    await page
-      .getByLabel("Jouw e-mailadres voor het rapport")
-      .fill("test@example.com");
+    await page.getByLabel("Jouw e-mailadres").scrollIntoViewIfNeeded();
+    await page.getByLabel("Jouw e-mailadres").fill("test@example.com");
 
     // Submit the form
+    await page
+      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
+      .scrollIntoViewIfNeeded();
     await page
       .getByRole("button", { name: /verstuur mijn gratis analyse/i })
       .click();
@@ -49,11 +54,11 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
     await page.waitForTimeout(2000);
 
     // Wait for success message
-    await expect(page.getByText("Bedankt voor je deelname!")).toBeVisible();
+    await expect(page.getByText("Bedankt voor je inzending!")).toBeVisible();
 
     // Verify success content
     await expect(
-      page.getByText("Je persoonlijke DBA-risico analyse is onderweg naar")
+      page.getByText("Je persoonlijke DBA-analyse is onderweg naar")
     ).toBeVisible();
 
     // Check that the form is no longer visible
@@ -86,35 +91,36 @@ test.describe("DBA Compliance Check - E2E Tests", () => {
 
   test("should handle form validation errors", async ({ page }) => {
     await page.goto("/");
-    await page
-      .getByRole("button", { name: /start gratis risico check/i })
-      .click();
+    await page.waitForLoadState("networkidle");
 
-    // Try to submit without filling required fields
-    await page
-      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
-      .click();
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
 
-    // Form should still be visible (HTML5 validation should prevent submission)
+    // Check that the button is disabled when email is empty
     await expect(
-      page.getByText("Beantwoord de vragen voor een persoonlijk risico-rapport")
-    ).toBeVisible();
+      page.getByRole("button", { name: /verstuur mijn gratis analyse/i })
+    ).toBeDisabled();
   });
 
   test("should show success state after form submission", async ({ page }) => {
     await page.goto("/");
-    await page
-      .getByRole("button", { name: /start gratis risico check/i })
-      .click();
+    await page.waitForLoadState("networkidle");
+
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
 
     // Fill out minimal form data
     const selects = page.locator("select");
-    await selects.first().selectOption({ index: 1 });
-    await page
-      .getByLabel("Jouw e-mailadres voor het rapport")
-      .fill("test@example.com");
+    const firstSelect = selects.first();
+    await firstSelect.scrollIntoViewIfNeeded();
+    await firstSelect.selectOption({ index: 1 });
+    await page.getByLabel("Jouw e-mailadres").scrollIntoViewIfNeeded();
+    await page.getByLabel("Jouw e-mailadres").fill("test@example.com");
 
     // Submit
+    await page
+      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
+      .scrollIntoViewIfNeeded();
     await page
       .getByRole("button", { name: /verstuur mijn gratis analyse/i })
       .click();

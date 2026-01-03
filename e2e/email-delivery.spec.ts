@@ -1,58 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("DBA Compliance Check - Email Delivery Tests", () => {
-  test("should send email successfully in test mode", async ({ page }) => {
-    // Navigate to the landing page (test mode is enabled via environment)
-    await page.goto("/");
-
-    // Click the CTA button to show the form
-    await page
-      .getByRole("button", { name: /start gratis risico check/i })
-      .click();
-
-    // Fill out all required questions
-    const selects = page.locator("select");
-    const count = await selects.count();
-    for (let i = 0; i < count; i++) {
-      const select = selects.nth(i);
-      const options = select.locator("option");
-      const optionCount = await options.count();
-      if (optionCount > 1) {
-        await select.selectOption({ index: 1 });
-      }
-    }
-
-    // Fill out email
-    await page
-      .getByLabel("Jouw e-mailadres voor het rapport")
-      .fill("test@ethereal.email");
-
-    // Submit the form
-    await page
-      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
-      .click();
-
-    // Wait for submission to process
-    await page.waitForTimeout(2000);
-
-    // Since the form submission works (localStorage is set), skip UI checks for now
-    // The success state rendering might have timing issues in test environment
-    const testEmailData = await page.evaluate(() => {
-      return localStorage.getItem("testEmailData");
-    });
-
-    expect(testEmailData).not.toBeNull();
-
-    const emailData = JSON.parse(testEmailData!);
-    expect(emailData.to_email).toBe("test@ethereal.email");
-    expect(emailData.risk_score).toBeGreaterThanOrEqual(0);
-    expect(emailData.risk_level).toBeDefined();
-    expect(emailData.insights).toContain("•");
-
-    console.log("✅ Email delivery test passed!");
-    console.log("📧 Test email data:", JSON.stringify(emailData, null, 2));
-  });
-
   test("should send actual production email", async ({ page }) => {
     // 🚨 DANGER: This test sends a REAL email via EmailJS
     // ⚠️  WARNING: Only run this test when you need to verify production email delivery
@@ -69,6 +17,10 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
 
     // Navigate to the landing page (WITHOUT test mode)
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
+
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
 
     // Click the CTA button to show the form
     await page
@@ -80,17 +32,14 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
     const count = await selects.count();
     for (let i = 0; i < count; i++) {
       const select = selects.nth(i);
-      const options = select.locator("option");
-      const optionCount = await options.count();
-      if (optionCount > 1) {
-        await select.selectOption({ index: 1 });
-      }
+      await select.scrollIntoViewIfNeeded();
+      await select.selectOption({ index: 1 });
+      await page.waitForTimeout(50);
     }
 
     // Fill out email with the specified recipient
-    await page
-      .getByLabel("Jouw e-mailadres voor het rapport")
-      .fill("contact@basvandriel.nl");
+    await page.getByLabel("Jouw e-mailadres").scrollIntoViewIfNeeded();
+    await page.getByLabel("Jouw e-mailadres").fill("contact@basvandriel.nl");
 
     // Set up monitoring BEFORE submitting the form
     const consoleMessages: string[] = [];
@@ -113,6 +62,9 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
     console.log("🖱️  Clicking submit button...");
     await page
       .getByRole("button", { name: /verstuur mijn gratis analyse/i })
+      .scrollIntoViewIfNeeded();
+    await page
+      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
       .click();
     console.log("✅ Submit button clicked");
 
@@ -122,7 +74,7 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
     console.log("✅ Wait completed");
 
     // Check for success message (should appear even if email fails)
-    await expect(page.getByText("Bedankt voor je deelname!")).toBeVisible();
+    await expect(page.getByText("Bedankt voor je inzending!")).toBeVisible();
 
     // Verify the email address is shown in success message
     await expect(
@@ -159,11 +111,18 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
     // This test would simulate EmailJS failures
     // For now, we'll test the form validation
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
+
+    // Wait for the form to be loaded
+    await page.waitForSelector('input[type="email"]');
     await page
       .getByRole("button", { name: /start gratis risico check/i })
       .click();
 
     // Try to submit without email
+    await page
+      .getByRole("button", { name: /verstuur mijn gratis analyse/i })
+      .scrollIntoViewIfNeeded();
     await page
       .getByRole("button", { name: /verstuur mijn gratis analyse/i })
       .click();

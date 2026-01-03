@@ -34,7 +34,6 @@ function App() {
     score: number;
     level: string;
     teaserInsights: string[];
-    emailInsights: string[];
   } => {
     let score = 0;
     const insights: string[] = [];
@@ -189,7 +188,6 @@ function App() {
       score,
       level,
       teaserInsights: insights.slice(0, 3),
-      emailInsights: insights,
     };
   };
 
@@ -200,7 +198,7 @@ function App() {
     const { score, level, teaserInsights } = calculateRiskScore(formData);
 
     const templateParams = {
-      to_email: formData.email,
+      email: formData.email,
       risk_score: score,
       risk_level: level,
       insights: teaserInsights.join("\n• "),
@@ -211,6 +209,24 @@ function App() {
       upsell_message:
         "Upgrade naar onze professionele PDF-analyse voor €49 voor gedetailleerde inzichten en verbeterplannen.",
     };
+
+    // In test mode, store data in localStorage instead of sending email
+    if (import.meta.env.VITE_TEST_MODE === "true") {
+      localStorage.setItem(
+        "testEmailData",
+        JSON.stringify({
+          to_email: formData.email,
+          risk_score: score,
+          risk_level: level,
+          insights: teaserInsights.join("\n• "),
+          form_data: templateParams.form_data,
+        })
+      );
+      setIsSubmitted(true);
+      trackEvent("form", "submit", "test_mode");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await emailjs.send(

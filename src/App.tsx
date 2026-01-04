@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { trackPageView, trackEvent } from "./utils";
+import { trackPageView, trackEvent, trackCustomEvent } from "./utils";
 import HeroSection from "./components/HeroSection";
 import ZZPPitfalls from "./components/ZZPPitfalls";
 import HowItWorks from "./components/HowItWorks";
 import ComplianceForm from "./components/ComplianceForm";
-import TestimonialSection from "./components/TestimonialSection";
 import Footer from "./components/Footer";
 
 function App() {
@@ -20,7 +19,46 @@ function App() {
   };
 
   const handleInputChange = (question: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [question]: value }));
+    const newData = { ...formData, [question]: value };
+    setFormData(newData);
+
+    // Track question answer
+    if (question !== "email") {
+      trackCustomEvent("question_answered", {
+        question_id: question,
+        answer: value,
+      });
+
+      // Track form start on first question
+      const wasEmpty =
+        Object.keys(formData).filter((key) => key !== "email" && formData[key])
+          .length === 0;
+      if (wasEmpty) {
+        trackCustomEvent("form_started");
+      }
+
+      // Track progress milestones
+      const answeredCount = Object.keys(newData).filter(
+        (key) => key !== "email" && newData[key]
+      ).length;
+      const totalQuestions = 15; // from questions array
+      const progressPercent = Math.round(
+        (answeredCount / totalQuestions) * 100
+      );
+      const prevProgressPercent = Math.round(
+        ((answeredCount - 1) / totalQuestions) * 100
+      );
+
+      if (progressPercent >= 25 && prevProgressPercent < 25) {
+        trackCustomEvent("form_progress", { progress: 25 });
+      } else if (progressPercent >= 50 && prevProgressPercent < 50) {
+        trackCustomEvent("form_progress", { progress: 50 });
+      } else if (progressPercent >= 75 && prevProgressPercent < 75) {
+        trackCustomEvent("form_progress", { progress: 75 });
+      } else if (progressPercent >= 100 && prevProgressPercent < 100) {
+        trackCustomEvent("form_progress", { progress: 100 });
+      }
+    }
   };
 
   useEffect(() => {
@@ -197,6 +235,15 @@ function App() {
 
     const { score, level, teaserInsights } = calculateRiskScore(formData);
 
+    // Track risk score
+    trackCustomEvent("risk_score_calculated", {
+      risk_score: score,
+      risk_level: level,
+      questions_answered: Object.keys(formData).filter(
+        (key) => key !== "email" && formData[key]
+      ).length,
+    });
+
     const templateParams = {
       email: formData.email,
       risk_score: score,
@@ -259,7 +306,6 @@ function App() {
           isSubmitted={isSubmitted}
         />
       </div>
-      <TestimonialSection />
       <Footer />
     </div>
   );

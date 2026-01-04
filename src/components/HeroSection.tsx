@@ -33,9 +33,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onStartCheck }) => {
           Start Gratis Risico Check
           <ArrowRightIcon className="inline h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
         </button>
-        <p className="text-xs opacity-75">
-          AVG Compliant • 4.8/5 Beoordeling • Ontwikkeld door Experts
-        </p>
       </div>
     </section>
   );

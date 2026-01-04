@@ -143,6 +143,25 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
     <section className="py-20 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            DBA Compliance Check
+          </h2>
+          <p className="text-lg text-gray-600 mb-8">
+            Beantwoord de volgende vragen om een DBA-risico te bepalen.
+          </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start">
+              <ExclamationTriangleIcon className="h-5 w-5 text-amber-600 mr-3 mt-0.5 shrink-0" />
+              <div className="text-sm text-amber-800">
+                <p className="font-medium mb-1">Conceptversie</p>
+                <p>
+                  Dit is een ontwikkelversie voor validatie. De resultaten geven
+                  een indicatieve inschatting en zijn nog geen vervanging voor
+                  juridisch advies.
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-gray-700">
               {filledQuestions} van {questions.length} vragen ingevuld
@@ -159,7 +178,7 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
           </div>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-8">
+        <form onSubmit={onSubmit} className="space-y-8" role="form">
           {questions.map((question, index) => (
             <div key={question.id} className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
@@ -196,7 +215,8 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
               Jouw e-mailadres
             </label>
             <p className="text-sm text-indigo-700 mb-4">
-              Hiernaartoe sturen we je persoonlijke DBA-analyse.
+              Je e-mailadres (verplicht voor je persoonlijke rapport – we sturen
+              geen spam)"
             </p>
             <input
               type="email"

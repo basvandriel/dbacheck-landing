@@ -34,8 +34,11 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "VITE_TEST_MODE=false npm run dev", // Explicitly set production mode
+    command: "npm run dev",
     url: "http://localhost:5173",
     reuseExistingServer: false, // Don't reuse existing server
+    env: {
+      VITE_TEST_MODE: "false",
+    },
   },
 });

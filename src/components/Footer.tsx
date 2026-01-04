@@ -10,8 +10,31 @@ const Footer: React.FC = () => {
           Ontwikkeld met zorg voor de Nederlandse markt.
         </p>
         <div className="border-t border-gray-800 pt-6">
+          <div className="mb-6 max-w-3xl mx-auto">
+            <h4 className="text-lg font-semibold mb-3 text-gray-200">
+              Privacy & Cookies
+            </h4>
+            <p className="text-sm text-gray-400 mb-4">
+              We verzamelen je e-mailadres en antwoorden alleen om je rapport te
+              sturen (max 30 dagen bewaard). De site gebruikt Google Analytics
+              met geanonimiseerde IP-adressen om bezoek te meten – geen
+              marketingcookies. Geen gegevens worden gedeeld met derden. Vragen?
+              Mail naar{" "}
+              <a
+                href="mailto:contact@basvandriel.nl"
+                className="text-indigo-400 hover:text-indigo-300 underline"
+              >
+                contact@basvandriel.nl
+              </a>
+            </p>
+          </div>
+          <p className="text-sm text-gray-400 mb-4 max-w-2xl mx-auto">
+            Deze tool geeft een indicatieve risico-inschatting voor
+            DBA-compliance. Voor persoonlijk advies raadpleeg altijd een
+            professional.
+          </p>
           <p className="text-sm text-gray-500">
-            © 2026 DBA-Check. Alle rechten voorbehouden. | Privacy & Veiligheid
+            © 2026 DBA-Check. Alle rechten voorbehouden.
           </p>
         </div>
       </div>

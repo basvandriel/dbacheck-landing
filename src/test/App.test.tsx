@@ -26,7 +26,7 @@ const localStorageMock = {
   clear: vi.fn(),
 };
 
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
 });
 
@@ -43,7 +43,9 @@ describe("App Tests", () => {
 
   it("shows form after clicking CTA", async () => {
     render(<App />);
-    const ctaButton = screen.getByRole("button", { name: /start gratis risico check/i });
+    const ctaButton = screen.getByRole("button", {
+      name: /start gratis risico check/i,
+    });
     await userEvent.click(ctaButton);
     expect(screen.getByText(/DBA Compliance Check/i)).toBeInTheDocument();
   });
@@ -52,7 +54,9 @@ describe("App Tests", () => {
     render(<App />);
 
     // Click CTA to show form
-    const ctaButton = screen.getByRole("button", { name: /start gratis risico check/i });
+    const ctaButton = screen.getByRole("button", {
+      name: /start gratis risico check/i,
+    });
     await userEvent.click(ctaButton);
 
     // Fill form
@@ -67,11 +71,16 @@ describe("App Tests", () => {
     const emailInput = screen.getByLabelText(/jouw e-mailadres/i);
     await userEvent.type(emailInput, "test@example.com");
 
-    const submitButton = screen.getByRole("button", { name: /verstuur mijn gratis analyse/i });
+    const submitButton = screen.getByRole("button", {
+      name: /verstuur mijn gratis analyse/i,
+    });
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(localStorageMock.setItem).toHaveBeenCalledWith("testEmailData", expect.any(String));
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        "testEmailData",
+        expect.any(String)
+      );
     });
 
     expect(screen.getByText(/bedankt/i)).toBeInTheDocument();

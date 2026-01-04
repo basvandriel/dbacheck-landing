@@ -46,9 +46,11 @@ test.describe("DBA Compliance Check - Email Delivery Tests", () => {
 
     // Check if any EmailJS calls were made - if not, we're in test mode
     const isTestMode = networkRequests.length === 0;
-    
+
     if (isTestMode) {
-      console.log("⏭️  Skipping production email test - running in test mode (no EmailJS calls detected)");
+      console.log(
+        "⏭️  Skipping production email test - running in test mode (no EmailJS calls detected)"
+      );
       return;
     }
 

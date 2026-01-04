@@ -31,16 +31,24 @@ function App() {
       });
 
       // Track form start on first question
-      const wasEmpty = Object.keys(formData).filter(key => key !== "email" && formData[key]).length === 0;
+      const wasEmpty =
+        Object.keys(formData).filter((key) => key !== "email" && formData[key])
+          .length === 0;
       if (wasEmpty) {
         trackCustomEvent("form_started");
       }
 
       // Track progress milestones
-      const answeredCount = Object.keys(newData).filter(key => key !== "email" && newData[key]).length;
+      const answeredCount = Object.keys(newData).filter(
+        (key) => key !== "email" && newData[key]
+      ).length;
       const totalQuestions = 15; // from questions array
-      const progressPercent = Math.round((answeredCount / totalQuestions) * 100);
-      const prevProgressPercent = Math.round(((answeredCount - 1) / totalQuestions) * 100);
+      const progressPercent = Math.round(
+        (answeredCount / totalQuestions) * 100
+      );
+      const prevProgressPercent = Math.round(
+        ((answeredCount - 1) / totalQuestions) * 100
+      );
 
       if (progressPercent >= 25 && prevProgressPercent < 25) {
         trackCustomEvent("form_progress", { progress: 25 });
@@ -235,7 +243,9 @@ function App() {
     trackCustomEvent("risk_score_calculated", {
       risk_score: score,
       risk_level: level,
-      questions_answered: Object.keys(formData).filter(key => key !== "email" && formData[key]).length,
+      questions_answered: Object.keys(formData).filter(
+        (key) => key !== "email" && formData[key]
+      ).length,
     });
 
     const templateParams = {

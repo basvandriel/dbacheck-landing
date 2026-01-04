@@ -47,9 +47,12 @@ export const trackEvent = (
   }
 };
 
-export const trackCustomEvent = (eventName: string, parameters?: Record<string, unknown>) => {
+export const trackCustomEvent = (
+  eventName: string,
+  parameters?: Record<string, unknown>
+) => {
   if (isAnalyticsEnabled) {
-    ReactGA.gtag('event', eventName, parameters);
+    ReactGA.gtag("event", eventName, parameters);
     console.log(`📊 Custom Event: ${eventName}`, parameters);
   }
 };

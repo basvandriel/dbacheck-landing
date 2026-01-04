@@ -23,6 +23,21 @@ function App() {
     const newData = { ...formData, [question]: value };
     setFormData(newData);
 
+    // Track email input
+    if (question === "email") {
+      // Track when user starts entering email
+      if (!formData.email && value) {
+        trackCustomEvent("email_input_started");
+      }
+      // Track email completion (basic validation)
+      if (value && value.includes("@") && value.includes(".")) {
+        trackCustomEvent("email_input_completed", {
+          email_length: value.length,
+        });
+      }
+      return;
+    }
+
     // Track question answer
     if (question !== "email") {
       trackCustomEvent("question_answered", {
@@ -248,6 +263,15 @@ function App() {
       ).length,
     });
 
+    // Track email submission (privacy-conscious - only track domain, not full email)
+    const emailDomain = formData.email?.split("@")[1] || "unknown";
+    trackCustomEvent("email_submitted", {
+      email_domain: emailDomain,
+      has_email: !!formData.email,
+      risk_score: score,
+      risk_level: level,
+    });
+
     const templateParams = {
       email: formData.email,
       risk_score: score,
@@ -273,6 +297,14 @@ function App() {
       );
       setIsSubmitted(true);
       trackEvent("form", "submit", "test_mode");
+      // Track email in test mode too (same privacy-conscious approach)
+      const emailDomain = formData.email?.split("@")[1] || "unknown";
+      trackCustomEvent("email_submitted_test", {
+        email_domain: emailDomain,
+        has_email: !!formData.email,
+        risk_score: score,
+        risk_level: level,
+      });
       setIsSubmitting(false);
       return;
     }

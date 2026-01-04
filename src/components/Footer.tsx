@@ -15,10 +15,11 @@ const Footer: React.FC = () => {
               Privacy & Cookies
             </h4>
             <p className="text-sm text-gray-400 mb-4">
-              We verzamelen je e-mailadres en antwoorden alleen om je rapport te sturen
-              (max 30 dagen bewaard). De site gebruikt Google Analytics met geanonimiseerde
-              IP-adressen om bezoek te meten – geen marketingcookies. Geen gegevens worden
-              gedeeld met derden. Vragen? Mail naar{" "}
+              We verzamelen je e-mailadres en antwoorden alleen om je rapport te
+              sturen (max 30 dagen bewaard). De site gebruikt Google Analytics
+              met geanonimiseerde IP-adressen om bezoek te meten – geen
+              marketingcookies. Geen gegevens worden gedeeld met derden. Vragen?
+              Mail naar{" "}
               <a
                 href="mailto:contact@basvandriel.nl"
                 className="text-indigo-400 hover:text-indigo-300 underline"

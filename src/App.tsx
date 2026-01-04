@@ -5,7 +5,6 @@ import HeroSection from "./components/HeroSection";
 import ZZPPitfalls from "./components/ZZPPitfalls";
 import HowItWorks from "./components/HowItWorks";
 import ComplianceForm from "./components/ComplianceForm";
-import TestimonialSection from "./components/TestimonialSection";
 import Footer from "./components/Footer";
 
 function App() {
@@ -307,7 +306,6 @@ function App() {
           isSubmitted={isSubmitted}
         />
       </div>
-      <TestimonialSection />
       <Footer />
     </div>
   );

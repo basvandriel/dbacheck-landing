@@ -153,14 +153,11 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
             <div className="flex items-start">
               <ExclamationTriangleIcon className="h-5 w-5 text-amber-600 mr-3 mt-0.5 shrink-0" />
               <div className="text-sm text-amber-800">
-                <p className="font-medium mb-1">
-                  Conceptversie - Geen juridisch advies
-                </p>
+                <p className="font-medium mb-1">Conceptversie</p>
                 <p>
-                  Dit is een ontwikkelversie voor business validatie. De
-                  resultaten geven een indicatieve inschatting en zijn geen
-                  vervanging voor professioneel advies. AVG-compliance volgt in
-                  de definitieve versie.
+                  Dit is een ontwikkelversie voor validatie. De resultaten geven
+                  een indicatieve inschatting en zijn nog geen vervanging voor
+                  juridisch advies.
                 </p>
               </div>
             </div>
@@ -218,7 +215,8 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
               Jouw e-mailadres
             </label>
             <p className="text-sm text-indigo-700 mb-4">
-              Hiernaartoe sturen we je persoonlijke DBA-analyse.
+              Je e-mailadres (verplicht voor je persoonlijke rapport – we sturen
+              geen spam)"
             </p>
             <input
               type="email"

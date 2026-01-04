@@ -34,8 +34,11 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "VITE_TEST_MODE=true npm run dev",
+    command: "npm run dev",
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
+    env: {
+      VITE_TEST_MODE: "true",
+    },
   },
 });

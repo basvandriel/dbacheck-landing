@@ -143,6 +143,12 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
     <section className="py-20 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            DBA Compliance Check
+          </h2>
+          <p className="text-lg text-gray-600 mb-8">
+            Beantwoord de volgende vragen om een DBA-risico te bepalen.
+          </p>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-gray-700">
               {filledQuestions} van {questions.length} vragen ingevuld
@@ -159,7 +165,7 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
           </div>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-8">
+        <form onSubmit={onSubmit} className="space-y-8" role="form">
           {questions.map((question, index) => (
             <div key={question.id} className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-bold text-gray-900 mb-4">

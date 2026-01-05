@@ -75,6 +75,48 @@ function App() {
   } => {
     let score = 0;
     const insights: string[] = [];
+    let immediateHighRisk = false;
+
+    // Check for immediate high risk indicators first
+    if (data.q2 === "Ja, expliciet gezegd" || data.q2 === "Ja, geïmpliceerd") {
+      immediateHighRisk = true;
+      insights.push(
+        "Je opdrachtgever ziet je als werknemer - dit is een kritische DBA-indicator"
+      );
+    }
+    if (data.q5 === "Ja, allemaal") {
+      immediateHighRisk = true;
+      insights.push(
+        "Je gebruikt al je software van je opdrachtgever - sterke afhankelijkheid"
+      );
+    }
+    if (data.q6 === "Ja") {
+      immediateHighRisk = true;
+      insights.push(
+        "Vast uurloon is een klassiek werknemerskenmerk - onmiddellijke actie vereist"
+      );
+    }
+    if (data.q7 === "Ja") {
+      immediateHighRisk = true;
+      insights.push(
+        "Vakantiegeld en werknemersvoordelen duiden op een arbeidsrelatie"
+      );
+    }
+    if (data.q13 === "Nee") {
+      immediateHighRisk = true;
+      insights.push(
+        "Geen inschrijving bij KvK - dit verhoogt het DBA-risico aanzienlijk"
+      );
+    }
+
+    // If any immediate high risk indicator is present, return high risk immediately
+    if (immediateHighRisk) {
+      return {
+        score: 25, // High score to ensure high risk level
+        level: "Hoog risico - Onmiddellijke actie vereist",
+        teaserInsights: insights.slice(0, 3),
+      };
+    }
 
     // q1: Hours worked
     if (data.q1 === "Meer dan 40") {
@@ -89,7 +131,7 @@ function App() {
       );
     }
 
-    // q2: Client thinks you're employee
+    // q2: Client thinks you're employee - BIG RISK (already handled above)
     if (data.q2 === "Ja, expliciet gezegd") {
       score += 3;
       insights.push(
@@ -121,7 +163,7 @@ function App() {
       );
     }
 
-    // q5: Use client software
+    // q5: Use client software BIG RISK (already handled above)
     if (data.q5 === "Ja, allemaal") {
       score += 3;
       insights.push("Je gebruikt al je software van je opdrachtgever");
@@ -130,7 +172,7 @@ function App() {
       insights.push("Je gebruikt gedeeltelijk software van je opdrachtgever");
     }
 
-    // q6: Fixed hourly wage
+    // q6: Fixed hourly wage BIG RISK (already handled above)
     if (data.q6 === "Ja") {
       score += 3;
       insights.push("Je hebt een vast uurloon - werknemerskenmerk");
@@ -139,7 +181,7 @@ function App() {
       insights.push("Je hebt soms een vast uurloon - let op");
     }
 
-    // q7: Holiday pay or benefits
+    // q7: Holiday pay or benefits BIG RISK (already handled above)
     if (data.q7 === "Ja") {
       score += 3;
       insights.push("Je krijgt vakantiegeld of werknemersvoordelen");
@@ -192,7 +234,7 @@ function App() {
       insights.push("Je gebruikt gedeeltelijk eigen gereedschappen");
     }
 
-    // q13: Chamber of Commerce registration
+    // q13: Chamber of Commerce registration IF NO, BIG RISK (already handled above)
     if (data.q13 === "Ja, als eenmanszaak" || data.q13 === "Ja, als BV") {
       score -= 1;
       insights.push("Je bent ingeschreven bij de Kamer van Koophandel");

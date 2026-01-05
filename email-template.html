@@ -130,8 +130,8 @@
                 <p>Bedankt voor het invullen van de DBA compliance check. Hier is je persoonlijke risicoanalyse.</p>
             </div>
 
-            <div class="risk-score {{risk_level | replace('Potentieel hoog risico - Overweeg actie', 'risk-high') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'risk-medium') | replace('Laag risico - Goede DBA-indicatoren', 'risk-low')}}">
-                <div class="urgent">{{risk_level | replace('Potentieel hoog risico - Overweeg actie', 'BELANGRIJK') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'LET OP') | replace('Laag risico - Goede DBA-indicatoren', '')}}</div>
+            <div class="risk-score {{risk_level | replace('Hoog risico - Onmiddellijke actie', 'risk-high') | replace('Potentieel hoog risico - Overweeg actie', 'risk-high') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'risk-medium') | replace('Laag risico - Goede DBA-indicatoren', 'risk-low')}}">
+                <div class="urgent">{{risk_level | replace('Hoog risico - Overweeg actie ', 'KRITIEK') | replace('Potentieel hoog risico - Overweeg actie', 'BELANGRIJK') | replace('Gemiddeld risico - Mogelijke aandachtspunten', 'LET OP') | replace('Laag risico - Goede DBA-indicatoren', '')}}</div>
                 <div style="font-size: 32px; font-weight: 700; margin: 8px 0;">{{risk_score}}/45</div>
                 <div>{{risk_level}}</div>
                 <div style="font-size: 12px; margin-top: 8px; font-style: italic;">Geschat risico gebaseerd op DBA-indicatoren</div>

@@ -28,6 +28,16 @@ const Footer: React.FC = () => {
               </a>
             </p>
           </div>
+          <div className="mb-6 max-w-3xl mx-auto">
+            <h4 className="text-lg font-semibold mb-3 text-gray-200">
+              Over deze tool
+            </h4>
+            <p className="text-sm text-gray-400">
+              Dit is een ontwikkelversie voor validatie. De resultaten geven een
+              indicatieve inschatting en zijn nog geen vervanging voor juridisch
+              advies.
+            </p>
+          </div>
           <p className="text-sm text-gray-500">
             © 2026 DBA-Check. Alle rechten voorbehouden. | Privacy & Veiligheid
           </p>

@@ -149,19 +149,6 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({
           <p className="text-lg text-gray-600 mb-8">
             Beantwoord de volgende vragen om een DBA-risico te bepalen.
           </p>
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-            <div className="flex items-start">
-              <ExclamationTriangleIcon className="h-5 w-5 text-amber-600 mr-3 mt-0.5 shrink-0" />
-              <div className="text-sm text-amber-800">
-                <p className="font-medium mb-1">Conceptversie</p>
-                <p>
-                  Dit is een ontwikkelversie voor validatie. De resultaten geven
-                  een indicatieve inschatting en zijn nog geen vervanging voor
-                  juridisch advies.
-                </p>
-              </div>
-            </div>
-          </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-gray-700">
               {filledQuestions} van {questions.length} vragen ingevuld

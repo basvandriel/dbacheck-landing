@@ -61,6 +61,8 @@ jobs:
         run: npm run build
         env:
           VITE_GH_PAGES_BASE_URL: '/'
+          VITE_ENABLE_ANALYTICS: 'true'
+          
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
